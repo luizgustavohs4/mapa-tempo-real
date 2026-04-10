@@ -25,15 +25,9 @@ function gerarCorAleatoria() {
     return cor;
 }
 
-io.on("connection", (socket) => {
-    console.log("Usuário conectado:", socket.id);
-
     socket.on("entrar", (dados) => {
         const nome = (dados.nome || "Usuário").trim();
         const foto = dados.foto || null;
-
-        console.log("Novo usuário:", nome);
-        console.log("Foto recebida?", !!foto);
 
         usuarios[socket.id] = {
             id: socket.id,
@@ -59,22 +53,10 @@ io.on("connection", (socket) => {
 
     socket.on("sairDoMapa", () => {
         if (usuarios[socket.id]) {
-            console.log("Usuário saiu do mapa:", usuarios[socket.id].nome);
             delete usuarios[socket.id];
             io.emit("usuariosAtualizados", usuarios);
         }
     });
-
-    socket.on("disconnect", () => {
-        if (usuarios[socket.id]) {
-            console.log("Usuário desconectado:", usuarios[socket.id].nome);
-            delete usuarios[socket.id];
-            io.emit("usuariosAtualizados", usuarios);
-        } else {
-            console.log("Socket desconectado:", socket.id);
-        }
-    });
-});
 
 const PORT = process.env.PORT || 3000;
 

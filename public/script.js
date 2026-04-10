@@ -117,7 +117,6 @@ function iniciarGeolocalizacao() {
             }
         },
         (erro) => {
-            console.error("Erro de geolocalização:", erro);
 
             if (erro.code === 1) {
                 statusSpan.textContent = "Permissão de localização negada.";
@@ -181,9 +180,7 @@ formCadastro.addEventListener("submit", async function (event) {
         try {
             statusSpan.textContent = "Preparando foto...";
             fotoBase64 = await prepararImagem(arquivoFoto);
-            console.log("Tamanho da imagem em Base64:", fotoBase64.length);
         } catch (erro) {
-            console.error("Erro ao preparar imagem:", erro);
             alert("Erro ao carregar a foto.");
             statusSpan.textContent = "Erro ao carregar a foto.";
             return;
