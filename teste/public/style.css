@@ -1,0 +1,146 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
+}
+
+#map {
+    width: 100%;
+    height: 100vh;
+}
+
+.painel {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    width: 320px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.painel h1 {
+    font-size: 24px;
+    color: #24314B;
+    margin-bottom: 8px;
+}
+
+.subtitulo {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+#formCadastro {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#formCadastro input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d9d9d9;
+    border-radius: 10px;
+    outline: none;
+    font-size: 14px;
+}
+
+#formCadastro input:focus {
+    border-color: #24314B;
+}
+
+#formCadastro button,
+#btnSair {
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: #24314B;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#formCadastro button:hover,
+#btnSair:hover {
+    background: #314267;
+}
+
+.acoes {
+    margin-top: 10px;
+}
+
+.info {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+}
+
+.info p {
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+.avatar-marker {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    position: relative;
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.25);
+}
+
+.avatar-marker img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.avatar-letra {
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.popup-usuario {
+    text-align: center;
+    font-size: 14px;
+}
+
+.popup-usuario strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #24314B;
+}
+
+@media (max-width: 600px) {
+    .painel {
+        width: calc(100% - 20px);
+        left: 10px;
+        top: 10px;
+        padding: 15px;
+    }
+
+    .painel h1 {
+        font-size: 20px;
+    }
+}

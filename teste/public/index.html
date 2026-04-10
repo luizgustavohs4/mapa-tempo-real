@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa em Tempo Real</title>
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="painel">
+        <h1>Mapa em Tempo Real</h1>
+        <p class="subtitulo">Entre com seu nome e sua foto para aparecer no mapa.</p>
+
+        <form id="formCadastro">
+            <input type="text" id="nome" placeholder="Digite seu nome" required>
+            <input type="file" id="foto" accept="image/*">
+            <button type="submit">Entrar no mapa</button>
+        </form>
+
+        <div class="acoes">
+            <button id="btnSair" style="display: none;">Sair do mapa</button>
+        </div>
+
+        <div class="info">
+            <p><strong>Status:</strong> <span id="status">Aguardando entrada...</span></p>
+            <p><strong>Usuários online:</strong> <span id="online">0</span></p>
+        </div>
+    </div>
+
+    <div id="map"></div>
+
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

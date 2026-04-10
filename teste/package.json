@@ -1,0 +1,15 @@
+{
+  "name": "mapa-tempo-real",
+  "version": "1.0.0",
+  "description": "Mapa em tempo real com múltiplos usuários",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Kaue",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "socket.io": "^4.8.1"
+  }
+}
