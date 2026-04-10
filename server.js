@@ -5,7 +5,10 @@ const { Server } = require("socket.io");
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+
+const io = new Server(server, {
+    maxHttpBufferSize: 10 * 1024 * 1024
+});
 
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -27,10 +30,15 @@ io.on("connection", (socket) => {
 
     socket.on("entrar", (dados) => {
         const nome = (dados.nome || "Usuário").trim();
+        const foto = dados.foto || null;
+
+        console.log("Novo usuário:", nome);
+        console.log("Foto recebida?", !!foto);
 
         usuarios[socket.id] = {
             id: socket.id,
             nome: nome,
+            foto: foto,
             inicial: nome.charAt(0).toUpperCase(),
             cor: gerarCorAleatoria(),
             lat: null,
@@ -50,13 +58,21 @@ io.on("connection", (socket) => {
     });
 
     socket.on("sairDoMapa", () => {
-        delete usuarios[socket.id];
-        io.emit("usuariosAtualizados", usuarios);
+        if (usuarios[socket.id]) {
+            console.log("Usuário saiu do mapa:", usuarios[socket.id].nome);
+            delete usuarios[socket.id];
+            io.emit("usuariosAtualizados", usuarios);
+        }
     });
 
     socket.on("disconnect", () => {
-        delete usuarios[socket.id];
-        io.emit("usuariosAtualizados", usuarios);
+        if (usuarios[socket.id]) {
+            console.log("Usuário desconectado:", usuarios[socket.id].nome);
+            delete usuarios[socket.id];
+            io.emit("usuariosAtualizados", usuarios);
+        } else {
+            console.log("Socket desconectado:", socket.id);
+        }
     });
 });
 

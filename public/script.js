@@ -20,13 +20,48 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "&copy; OpenStreetMap"
 }).addTo(map);
 
-function converterImagemParaBase64(arquivo) {
+function prepararImagem(arquivo) {
     return new Promise((resolve, reject) => {
         const leitor = new FileReader();
-        leitor.readAsDataURL(arquivo);
 
-        leitor.onload = () => resolve(leitor.result);
-        leitor.onerror = (erro) => reject(erro);
+        leitor.onload = (evento) => {
+            const img = new Image();
+
+            img.onload = () => {
+                const canvas = document.createElement("canvas");
+                const ctx = canvas.getContext("2d");
+
+                const tamanhoMaximo = 150;
+                let largura = img.width;
+                let altura = img.height;
+
+                if (largura > altura) {
+                    if (largura > tamanhoMaximo) {
+                        altura = altura * (tamanhoMaximo / largura);
+                        largura = tamanhoMaximo;
+                    }
+                } else {
+                    if (altura > tamanhoMaximo) {
+                        largura = largura * (tamanhoMaximo / altura);
+                        altura = tamanhoMaximo;
+                    }
+                }
+
+                canvas.width = largura;
+                canvas.height = altura;
+
+                ctx.drawImage(img, 0, 0, largura, altura);
+
+                const imagemBase64 = canvas.toDataURL("image/jpeg", 0.6);
+                resolve(imagemBase64);
+            };
+
+            img.onerror = () => reject(new Error("Erro ao carregar a imagem."));
+            img.src = evento.target.result;
+        };
+
+        leitor.onerror = () => reject(new Error("Erro ao ler o arquivo."));
+        leitor.readAsDataURL(arquivo);
     });
 }
 
@@ -120,7 +155,6 @@ function sairDoMapa() {
 
     nomeInput.value = "";
     fotoInput.value = "";
-
     meuNome = "";
 }
 
@@ -135,15 +169,23 @@ formCadastro.addEventListener("submit", async function (event) {
         return;
     }
 
+    if (arquivoFoto && arquivoFoto.size > 5 * 1024 * 1024) {
+        alert("Escolha uma imagem menor que 5MB.");
+        return;
+    }
+
     meuNome = nome;
     let fotoBase64 = null;
 
     if (arquivoFoto) {
         try {
-            fotoBase64 = await converterImagemParaBase64(arquivoFoto);
+            statusSpan.textContent = "Preparando foto...";
+            fotoBase64 = await prepararImagem(arquivoFoto);
+            console.log("Tamanho da imagem em Base64:", fotoBase64.length);
         } catch (erro) {
-            console.error("Erro ao converter imagem:", erro);
+            console.error("Erro ao preparar imagem:", erro);
             alert("Erro ao carregar a foto.");
+            statusSpan.textContent = "Erro ao carregar a foto.";
             return;
         }
     }
@@ -180,10 +222,11 @@ socket.on("usuariosAtualizados", (usuarios) => {
         }
 
         const icone = criarIconeUsuario(usuario);
+        const nomeExibido = id === socket.id ? "Você" : usuario.nome;
 
         const popupHTML = `
             <div class="popup-usuario">
-                <strong>${usuario.nome}</strong>
+                <strong>${nomeExibido}</strong>
                 <span>Usuário online</span>
             </div>
         `;
