@@ -25,9 +25,15 @@ function gerarCorAleatoria() {
     return cor;
 }
 
+io.on("connection", (socket) => {
+    console.log("Usuário conectado:", socket.id);
+
     socket.on("entrar", (dados) => {
         const nome = (dados.nome || "Usuário").trim();
         const foto = dados.foto || null;
+
+        console.log("Novo usuário:", nome);
+        console.log("Foto recebida?", !!foto);
 
         usuarios[socket.id] = {
             id: socket.id,
@@ -57,6 +63,7 @@ function gerarCorAleatoria() {
             io.emit("usuariosAtualizados", usuarios);
         }
     });
+});
 
 const PORT = process.env.PORT || 3000;
 
