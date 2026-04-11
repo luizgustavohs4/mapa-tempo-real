@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapa em Tempo Real</title>
 
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -30,6 +29,13 @@
         <div class="info">
             <p><strong>Status:</strong> <span id="status">Aguardando entrada...</span></p>
             <p><strong>Usuários online:</strong> <span id="online">0</span></p>
+        </div>
+    </div>
+
+    <div id="telaEspera">
+        <div class="loader-container">
+            <div class="spinner"></div>
+            <p id="textoLoading">Conectando sua localização...</p>
         </div>
     </div>
 

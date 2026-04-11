@@ -1,5 +1,7 @@
 let socket = io();
 
+const telaEspera = document.getElementById("telaEspera");
+const textoLoading = document.getElementById("textoLoading");
 const formCadastro = document.getElementById("formCadastro");
 const nomeInput = document.getElementById("nome");
 const fotoInput = document.getElementById("foto");
@@ -97,6 +99,8 @@ function iniciarGeolocalizacao() {
         return;
     }
 
+    textoLoading.textContent = "Obtendo localização...";
+
     statusSpan.textContent = "Solicitando localização...";
 
     meuWatchId = navigator.geolocation.watchPosition(
@@ -112,11 +116,24 @@ function iniciarGeolocalizacao() {
             });
 
             if (minhaPrimeiraLocalizacao) {
+                telaEspera.classList.add("esconder");
+                    setTimeout(() => {
+                    telaEspera.style.display = "none";
+                }, 500);
+
                 map.setView([latitude, longitude], 15);
                 minhaPrimeiraLocalizacao = false;
             }
         },
         (erro) => {
+
+            telaEspera.classList.add("esconder");
+
+            setTimeout(() => {
+                telaEspera.style.display = "none";
+            }, 500);
+
+            statusSpan.textContent = "Erro na localização";
 
             if (erro.code === 1) {
                 statusSpan.textContent = "Permissão de localização negada.";
@@ -159,6 +176,9 @@ function sairDoMapa() {
 
 formCadastro.addEventListener("submit", async function (event) {
     event.preventDefault();
+
+    telaEspera.style.display = "flex";
+    textoLoading.textContent = "Solicitando permissão...";
 
     const nome = nomeInput.value.trim();
     const arquivoFoto = fotoInput.files[0];
